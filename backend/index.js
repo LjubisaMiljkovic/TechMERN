@@ -1,79 +1,29 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
+const userRoutes=require('./routes/userRoutes');
+const AppError = require('./utils/AppError');
 
-//*Models
-//*==============
-const Users = require('./models/userModel');
-
+//*Controllers
+const errorController = require('./controllers/errorController');
+const Email = require('./utils/Email');
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors());
 
-app.post('/register', async (req, res, next) => {
-    try {
-        const user = await Users.findOne({email: req.body.email}); 
-        console.log(user, 'user');
-        if(!user) {
-            const newUser = new Users(req.body);
-            console.log(newUser, 'newUser');
 
-            try {
-                const saveNewUser = await newUser.save();
-                console.log(saveNewUser, 'saveNewUser');
-                return   res.status(200).json({
-                         status: 'success',
-                         message:'User uspesno registrovan'
-                     });
-            } catch (err) {
-                
-                return res.status(500).json({
-                    status: 'error',
-                    message: 'Nije sacuvan user u bazi'
-                })
-            }
-        } else {
-            return res.status(409).json({
-                status: 'fail',
-                message: 'Ovakav korisnik vec postoji'
-            })
-        }    
-               
-    } catch (err) {
-        return res.status(500).json({
-            status: 'error',
-            message: 'Greska na serveru'})
-    }
+//*Routes
+app.use('/api/user',userRoutes);
 
-})
-//*Login
-//*==========
 
-app.post('/login', async (req, res, next) => {
-    try {
-        const user = await Users.findOne({email: req.body.email});
-        console.log(user,'user');
-        if(user){
-                if(user.password === req.body.password) {
-                    return   res.status(200).json({
-                        status: 'success',
-                        message:'Uspesno ste se logovali'
-                    });
-                } else{
-                    return res.status(404).json({
-                        status: 'fail',
-                        message: 'Netacani kredencijali'
-                    });
-                }
-        }
+//*404 error
+    app.all('*',(req,res,next)=>{
+        return next(new AppError(`Ova stranica ${req.originalUrl} ne postoji.`, 404))
+        }) 
+//*Global error handler middelwer
+//=============
 
-    } catch (err) {
-        return res.status(500).json({
-            status: 'fail',
-            message: 'Greska na serveru'})
-        }
-        
-    })
+    app.use(errorController);
 
 module.exports = app;

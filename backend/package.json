@@ -9,9 +9,13 @@
   "author": "Miljkovic LJubisa MERN",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "express": "^4.18.3",
-    "mongoose": "^8.2.1"
+    "html-to-text": "^9.0.5",
+    "mongoose": "^8.2.1",
+    "nodemailer": "^6.9.12",
+    "pug": "^3.0.2"
   },
   "devDependencies": {
     "dotenv": "^16.4.5",
