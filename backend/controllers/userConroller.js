@@ -28,19 +28,20 @@ exports.register = cathcAsync(async (req, res, next) => {
 //=================
 
 exports.login = cathcAsync(async (req, res, next) => {
-    const user = await Users.findOne({ email: req.body.email });
-    console.log(user, 'user');
+    const user = await Users.findOne({ email: req.body.email }).select('+password'); // cita password i ako je u modelu receno da ga ne cita
     if (!user) {
         return next(new AppError('Ovakav korisnik ne postoji, molim registrujte se ponovo', 401))
     }
-    if (user) {
-        if (user.password === req.body.password) {
-            return res.status(200).json({
-                status: 'success',
-                message: 'Uspesno ste se logovali'
-            });
-        } else {
-            return next(new AppError('Netacni kredencijali', 401))
-        }
-    }
+
+    // * Proveravamo password
+    const isCorrectPassword = await user.isCorrectPassword(req.body.password, user.password);
+
+    if (!isCorrectPassword) return next(new AppError('Netacni kredencijali', 401))
+
+    //* Izbacujemo password
+    const { password, _id, __v, ...userData } = user.toObject()   // izbacili smo password iz user a
+    return res.status(200).json({
+        status: 'success',
+        user: userData
+    });
 });

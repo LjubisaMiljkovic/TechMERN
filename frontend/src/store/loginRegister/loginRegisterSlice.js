@@ -14,7 +14,7 @@ const loginRegisterSlice = createSlice({
         },
         showRegisterForm: (state) => {
             state.isLoginForm = false;
-        }
+        },
     },
 });
 

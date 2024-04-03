@@ -61,7 +61,7 @@ function RegisterForm() {
         <div className="content">
           <h3>Welcome to TechMern shop</h3>
           <p>If already have account please {' '}
-            <span onClick={()=> dispatch(showLoginForm())}>
+            <span onClick={() => dispatch(showLoginForm())}>
               go to Login <FaArrowRightLong />
             </span>
           </p>
@@ -82,7 +82,12 @@ function RegisterForm() {
             <Label htmlFor='password' color={isPassword}>
               {isPassword ? 'Password' : 'Password is requier'}
             </Label>
-            <Input type={showPassword ? 'text' : 'password'} id='password' placeholder='Type your password' onChange={handleChange} />
+            <Input
+              type={showPassword ? 'text' : 'password'}
+              id='password'
+              placeholder='Chose your password'
+              onChange={handleChange}
+            />
             <span onClick={() => setShowPassword(!showPassword)}>
               {showPassword ? <IoEyeOff /> : <IoEye />}
             </span>

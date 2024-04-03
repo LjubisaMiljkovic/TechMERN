@@ -19,6 +19,7 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: [true, 'Password is required'],
+        select: false,
         // validate:{
         //     validator:function(password){
         //         const regexPassword = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/;
@@ -55,6 +56,11 @@ const userSchema = new Schema({
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) return next();                           //ako je menjan samo username
     this.password = await bcrypt.hash(this.password, 12);
-})
+});
+userSchema.methods.isCorrectPassword = async (candidatePassword, userPassword) => {
+    return await bcrypt.compare(candidatePassword, userPassword);
+}
+
 const UserModel = mongoose.model('users', userSchema);
+
 module.exports = UserModel;

@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { routesConfig } from "../../config/routesConfig";
 import './Navigation.scss'
 import { useEffect } from "react";
@@ -6,15 +6,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCurrency } from "../../store/currency/currencySlice";
 import { toggleLoginForm } from "../../store/loginRegister/loginRegisterSlice";
 import { localStorageConfig } from "../../config/localStorageConfig";
+import { IoIosArrowDown } from "react-icons/io";
+import { removeUser } from '../../store/user/userSlice';
 
 
 
 
 function Navigation() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate
     const { isLoginForm } = useSelector((state) => state.loginRegisterStore)
     const { currency } = useSelector((state) => state.currencyStore);
     const { symbol } = useSelector((state) => state.currencyStore);
-    const dispatch = useDispatch()
+    const { user } = useSelector((state) => state.userStore)
 
     useEffect(() => {
         localStorage.setItem(localStorageConfig.CURRENCY, currency)
@@ -27,7 +31,42 @@ function Navigation() {
     const toggleView = (e) => {
         dispatch(toggleLoginForm(!isLoginForm))
     }
+    const userlogout = () => {
+        localStorage.removeItem(localStorageConfig.USER);
+        dispatch(removeUser());
+        navigate(routesConfig.AUTHORIZATION.url); //HORIZATION.); //
+    }
 
+    const navigationView = () => {
+        return localStorage.getItem(localStorageConfig.USER) ? (
+            <div className="dropdown">
+                <li className="dropbtn">
+                    <a>{user.username}
+                        <IoIosArrowDown />
+                    </a>
+
+                </li>
+                <div className="dropdown-content">
+                    <li>
+                        <NavLink>Profile</NavLink>
+                    </li>
+                    {user.role === 'admin' && (
+                        <li>
+                            <NavLink to={routesConfig.DASHBOARD.url}>Dashboard</NavLink>
+                        </li>
+                    )}
+
+                    <li onClick={userlogout}>
+                        <a>Logout</a>
+                    </li>
+                </div>
+            </div>
+        ) : (
+            <li>
+                <NavLink to={routesConfig.AUTHORIZATION.url} onClick={toggleView}>{isLoginForm ? 'Register' : 'Login'}</NavLink>
+            </li>
+        )
+    }
     return (
         <>
             <header>
@@ -51,9 +90,7 @@ function Navigation() {
                                     <li>
                                         <NavLink to={routesConfig.CONTACT.url}>Contact </NavLink>
                                     </li>
-                                    <li>
-                                        <NavLink to={routesConfig.AUTHORIZATION.url} onClick={toggleView}>{isLoginForm ? 'Register' : 'Login'}</NavLink>
-                                    </li>
+                                    {navigationView()}
                                 </ul>
                             </nav>
                         </div>

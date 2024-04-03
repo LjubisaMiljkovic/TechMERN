@@ -1,7 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
+const path = require('path');
 const userRoutes=require('./routes/userRoutes');
+const adminRoutes=require('./routes/adminRoutes');
 const AppError = require('./utils/AppError');
 
 //*Controllers
@@ -12,10 +14,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors());
 
+//Ucitaj mi staticke fajlove
+app.use('/uploads',express.static(path.join(__dirname, 'uploads')));
+
 
 //*Routes
 app.use('/api/user',userRoutes);
-
+app.use('/api/admin', adminRoutes);
 
 //*404 error
     app.all('*',(req,res,next)=>{
