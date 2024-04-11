@@ -14,12 +14,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from './store/user/userSlice.js';
 import DashboardPage from './pages/Dashboard/DashboardPage.jsx';
 import AdminProtect from './adminComponents/AminProtect/AdminProtect.jsx';
-import Navigation from './components/Navigation/Navigations.jsx';
+import Navigation from './components/Navigation/Navigation.jsx';
 import { showDashboard } from './store/dashboard/dashboardSlice.js';
 import AddProduct from './adminComponents/AddProduct/AddProduct.jsx';
 import Statistics from './adminComponents/Statistics/Statistics.jsx';
 import Users from './adminComponents/Users/Users.jsx';
 import Comments from './adminComponents/Comments/Comments.jsx';
+import SingleProduct from './pages/SingleProduct/SingleProduct.jsx';
+import OrderPage from './pages/Order/OrderPage.jsx';
 
 
 
@@ -48,6 +50,8 @@ function App() {
         <Route path={routesConfig.SHOP.url} element={<ShopPage />} />
         <Route path={routesConfig.CONTACT.url} element={<ContactPage />} />
         <Route path={routesConfig.AUTHORIZATION.url} element={<AuthorizationPage />} />
+        <Route path={routesConfig.SINGLE_PRODUCT.url} element={<SingleProduct/>}/>
+        <Route path={routesConfig.ORDER.url} element={<OrderPage/>}/>
         <Route
           path={routesConfig.DASHBOARD.url}
           element={
