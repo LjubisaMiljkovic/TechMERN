@@ -22,6 +22,8 @@ import Users from './adminComponents/Users/Users.jsx';
 import Comments from './adminComponents/Comments/Comments.jsx';
 import SingleProduct from './pages/SingleProduct/SingleProduct.jsx';
 import OrderPage from './pages/Order/OrderPage.jsx';
+import { setCart} from './store/cart/cartSlice';
+
 
 
 
@@ -41,6 +43,12 @@ function App() {
     if (location.pathname.startsWith('/dashboard')) dispatch(showDashboard(true));
     else dispatch(showDashboard(false));
   }, [location, dispatch]);
+
+  //* Setujemo korpu u reduxu ukoliko ppostoji u localStorage
+
+  useEffect(() => {
+    if(Object.prototype.hasOwnProperty.call(localStorage, localStorageConfig.CARD)) dispatch(setCart(JSON.parse(localStorage.getItem(localStorageConfig.CARD))))
+  },[dispatch]);
 
   return (
     <>

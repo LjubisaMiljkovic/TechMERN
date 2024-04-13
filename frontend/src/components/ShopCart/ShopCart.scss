@@ -1,5 +1,3 @@
-@import '../../assets/sass/main.scss';
-
 .shop-cart {
     position: relative;
 
@@ -9,37 +7,38 @@
 
     .shop-cart-badge {
         position: absolute;
-        background-color: tomato !important;
-        padding: 0 10px;
+        background-color: tomato;
         color: #fff;
         border-radius: 50%;
         top: 12px;
-        
+        font-size: 16px;
+        padding: 0px 9px;
     }
 
-    .shop-cart-summary{
-        position: absolute;
+    .shop-cart-summary {
+        background-color: #fff;
         padding: 10px;
-        background-color: #eee;
+        position: absolute;
         right: 0;
+        width: 300px;
+        border-radius: 4px;
+        box-shadow: 0 0 6px rgb(0 0 0 / 38%);
+        font-size: 12px;
         z-index: 10;
 
-        .shop-cart-items{
-            max-height: 400px;
+        .shop-cart-items {
             overflow: auto;
-
+            max-height: 400px;
 
             .shop-cart-item {
                 display: grid;
-                grid-template-columns:auto 1fr auto ;
-                gap: 10px;
-                display: flex;
+                grid-template-columns: auto 1fr auto;
+                gap: 0 10px;
 
                 img {
                     width: 50px;
                     height: 50px;
                     object-fit: contain;
-
                 }
 
                 .content {
@@ -49,13 +48,23 @@
 
                     .count {
                         display: flex;
+                        gap: 5px;
                     }
                 }
 
-                .remove {
+                & div:last-child {
+                    justify-self: center;
+                }
 
+                .remove {
+                    align-self: center;
                 }
             }
+        }
+
+        .order-btn {
+            text-align: center;
+            margin: 20px 0 10px 0;
         }
     }
 }
